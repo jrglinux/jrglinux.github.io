@@ -1,0 +1,30 @@
+markdown: kramdown
+highlighter: pygments
+permalink: /posts/:title.html
+excerpt_separator: "<!-- more -->"
+
+github: jrglinux 
+author: "jrglinux"
+email: jrglinuxcn@gmail.com
+name: "jrglinux|blog"
+url: http://jrglinux.github.io
+domain: jrglinux.github.io
+all_categories: [
+["program", "C/C++","/posts/program.html"],
+["linux", "Linux","/posts/linux.html"],
+["android", "Android","/posts/android.html"], 
+["news", "News","/posts/news.html"], 
+["other", "Other","/posts/other.html"],
+["about", "About","/about.html"]
+]
+
+paginate: 8
+paginate_path: "posts/page:num"
+timezone: China/Shanghai
+
+collections:
+  docs:
+    output: true
+
+gems:
+ - jekyll-paginate
