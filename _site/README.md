@@ -1,13 +1,13 @@
-Jekyll博客模板
+jrglinux博客
 ================
 
 #### 1.浏览
-http://jrglinux.github.io, 支持PC与智能机访问。  
+http://jrglinux.github.io  
 
-#### 2.模板使用
+#### 2.使用
 修改_config.yml与_includes目录下相关文件进行配置。  
 
-#### 3.联系作者
+#### 3.作者
 Email: jrglinuxcn@gmail.com  
 
 #### 4.赞助

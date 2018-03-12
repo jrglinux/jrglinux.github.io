@@ -4,9 +4,9 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="description" content="问答：Faqs - jrglinux|blog - 作者:jrglinux"/> 
+    <meta name="description" content="Using Git - jrglinux|blog - 作者:jrglinux"/> 
 	
-    <title>问答：Faqs - jrglinux|blog</title>
+    <title>Using Git - jrglinux|blog</title>
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Custom CSS -->
@@ -99,23 +99,156 @@
       <div class="row">
         <!-- Blog Entries Column -->
         <div class="col-md-8">
-          <p>记录工作中遇到的一些小问题及解决办法，以防忘记后重头再找答案。</p>
+          <!-- Navi -->
+<a href="/">首页</a>&nbsp;>&nbsp;<a href="/posts/linux.html">Linux</a>&nbsp;>&nbsp;正文
+<!-- Title -->
+<h2>Using Git</h2>
 
-<h4 id="格式">格式：</h4>
-<p>问：Win7下 Eclipse中按”Alt+Ctrl+Down或Alt+Ctrl+Up”时，结果屏幕倒了怎么办？<br />
-答：是不是和其它应用的快捷键冲突了？比如Intel显卡，则可选择“图形属性”&gt;“选项和支持”，将对应快捷键换掉。参考：http://www.2cto.com/os/201201/116412.html</p>
+<div class="post-date">
+	<span class="glyphicon glyphicon-time"></span>
+	2017-09-27
+</div>
+<br/>
 
-<h4 id="或作为url收藏记录">或作为url收藏记录</h4>
-<p>1,Markdown语法：<a href="http://wowubuntu.com/markdown/basic.html">http://wowubuntu.com/markdown/basic.html</a><br />
-2,Oracle现在真是恶心，下载个Java SDK还非得让登陆不可。只好再找下载地址了: <a href="http://ghaffarian.net/downloads/">http://ghaffarian.net/downloads/</a><br />
-3,git文章收藏:<br />
-Git分支管理策略: <a href="http://www.ruanyifeng.com/blog/2012/07/git.html">http://www.ruanyifeng.com/blog/2012/07/git.html</a>  <br />
-Git查看、删除、重命名远程分支和tag: http://zengrong.net/post/1746.htm<br />
-4,Google无障碍浏览链接：<a href="https://github.com/greatfire/wiki">https://github.com/greatfire/wiki</a><br />
-5,在线Android等源码：<a href="http://www.grepcode.com/">http://www.grepcode.com/</a>, <a href="http://androidxref.com/">http://androidxref.com/</a><br />
-6,Twitter University: <a href="http://www.bluemobi.cn/">http://www.bluemobi.cn/</a><br />
-更多请看本文评论，欢迎来盖楼！</p>
+<!-- content -->
+<div style="text-indent:2em;">
+<p><strong>摘要</strong></p>
 
+<p>分布式版本控制管理系统工具Git，怎能不会用？立志从嵌入式程序员入行、转到IoT世界，刚参加工作，对于Git使用很不熟悉，被公司老员工一顿嫌弃；以此记录自己所学，以备参考并勉励自己</p>
+
+<p>###分布式版本控制系统Git</p>
+
+<p>Version Control System（VCS）；关心整体数据的变化而不局限于单个文件；快照而不是简单复制；分支协同合作；本地与远程的无缝连接；开源的思想精髓、技术开源与贡献才会使得人类文明快速前进</p>
+
+<h3 id="常用命令">常用命令</h3>
+
+<p><strong>工作目录树</strong></p>
+
+<p>Git世界中，版本库不是特指服务器上版本库，而是存储在本地工作目录树的”.git”目录中；<strong>也即，想知道历史记录信息，就和本地的版本库打交道，无需和服务器上的版本库通信</strong></p>
+
+<h4 id="git配置">Git配置</h4>
+
+<p>创建一个本地仓库并配置</p>
+
+<pre><code class="language-bash">$ mkdir test.git
+$ git init   //初始化仓库，--bare参数是裸仓库（一般用于远程仓库）
+$ git config --list  //本地仓库配置信息列表
+$ git config --global --list  //本地仓库全局配置信息列表
+$ git config --global --edit  //打开配置文件进行配置
+$ git config --global user.name "your name"
+$ git config --global user.email "your email_adr"
+$ git config --global color.ui "auto"
+</code></pre>
+
+<h4 id="添加与提交">添加与提交</h4>
+
+<pre><code class="language-bash">$ git status
+$ git add &lt;file&gt;
+$ git add --all
+$ git add .
+$ git commit -m "commit illustrates" -m "xxxx"
+$ git commit -C HEAD -a --amend //追加提交信息
+
+$ git revert -n HEAD //反转提交
+$ git reset --soft
+$ git reset --hard  //慎用
+</code></pre>
+
+<h4 id="分支">分支</h4>
+
+<pre><code class="language-bash">$ git branch br-name master //从主分支master新建分支br-name
+$ git checkout -b br-name //新建分支br-name并切换至该分支
+$ git checkout br-name  //切换到br-name分支
+$ git commit -a  //全部提交
+$ git tag br1.0 br-name  //给分支br-name打上标签
+$ git tag  //查看标签信息
+$ git rebase br-name //将br-name变基到主分支
+$ git branch br-name br1.0 //在标签br1.0上建立分支br-name
+$ git archive --format=tar --prefix=test.git/ br1.0 | gzip &gt; test.tar.gz 
+      //将br1.0标签对应的版本内容打包发布
+$ git merge  //合并分支
+$ git merge --squash br-name  //将br-name分支提交压合到当前分值
+提交压合是指将所有提交记录合成一个记录，慎用
+$ git cherry-pick &lt;commit value&gt; //选择一个提交（commit值）来合并到当前分支
+$ git reset --hard &lt;commit value&gt; 
+$ git mergetool   //分支合并时如果有冲突，利用可视化工具进行操作
+$ git branch -d br-name
+$ git branch -m br-name br-name1  
+      //重命名分支，-m参数不会覆盖已存在同名br-name1的分支，
+      //如果已存在br-name1，则此命令会报错；-M参数会覆盖已存在的同名分支
+</code></pre>
+
+<h4 id="常用操作">常用操作</h4>
+
+<pre><code class="language-bash">$ git add -i  //交互式选择命令暂存到缓存区
+$ git mv name1 name2  //文件名重命名，保留原文件记录信息并删除源文件
+$ touch .gitignore  //版本库级设置忽略，或者在.git/info/exclude中添加个人级别忽略
+</code></pre>
+
+<h4 id="查询记录">查询记录</h4>
+
+<pre><code class="language-bash">$ git log  //查询commit记录信息
+$ git log -2 //查看最近2次的提交
+$ git reflog  //查看所有分支的记录
+$ git log --since="5 hours"
+$ git log --before="5 hours" -1 //查看5小时前的最后一次提交记录
+$ git log &lt;commit value&gt;   //查看指定提交记录
+$ tig &lt;commit value&gt;     //具体查看该提交记录的修改内容
+$ git diff   //比较工作目录树和暂存区之间的区别
+$ git diff --cached  //比较暂存区和版本去之间的区别
+$ git diff &lt;commit value&gt;  //查看指定记录与当前版本的区别
+$ git diff --stat &lt;commit value&gt;/&lt;tag&gt;  //炫酷的--stat参数可以统计变更数据
+$ git diff &lt;commit value1&gt; &lt;commit value2&gt;
+$ git blame &lt;file&gt;  //谁的责任
+$ git blame -L &lt;n,m&gt; &lt;file&gt;  //查看file中n到m行谁的责任
+$ git blame -L n,+m &lt;file&gt; //查看n到n+m行
+
+</code></pre>
+
+<h4 id="远程协作">远程协作</h4>
+
+<p>三种通信协议</p>
+
+<p><strong>SSH</strong></p>
+
+<p>git clone ssh://name@github.com/xxxx/xxx.git</p>
+
+<p><strong>git</strong></p>
+
+<p>git clone git://github.com/xxxx/xxx.git</p>
+
+<p><strong>http/https</strong></p>
+
+<p>git clone https://github.com/xxxx/xxx.git</p>
+
+<h4 id="高级功能">高级功能</h4>
+
+<pre><code class="language-sh">$ git gc  //整理版本库
+$ git archive //到处版本库
+$ git rebase //分支变基
+$ git bisect help //二分查找
+</code></pre>
+
+
+</div>
+
+<br/>
+<b>原创文章，转载请注明出处！</b>
+<br/>
+<b>本文链接：</b><a href="http://localhost:4000/posts/Git%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80-1.html" title="">http://localhost:4000/posts/Git%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80-1.html</a>
+
+<!-- next and previous -->
+<div style="margin-top:15px; margin-bottom:10px">
+  
+  <span class="next">
+    上篇：
+    <a href="/posts/openwrt%E6%B7%BB%E5%8A%A0pppoe-server.html">
+      Add re-pppoe to Openwrt
+    </a>
+  </span>
+   
+  
+</div>
 <hr>
 <!-- Blog Comments -->
 <div class="media">

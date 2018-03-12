@@ -4,8 +4,9 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="description" content="love the world - jrglinux|blog - 作者:jrglinux"/>
-    <title>love the world - jrglinux|blog</title>
+    <meta name="description" content="Add re-pppoe to Openwrt - jrglinux|blog - 作者:jrglinux"/> 
+	
+    <title>Add re-pppoe to Openwrt - jrglinux|blog</title>
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Custom CSS -->
@@ -98,149 +99,19 @@
       <div class="row">
         <!-- Blog Entries Column -->
         <div class="col-md-8">
-          <!-- Loop output paged posts -->
+          <!-- Navi -->
+<a href="/">首页</a>&nbsp;>&nbsp;<a href="/posts/linux.html">Linux</a>&nbsp;>&nbsp;正文
+<!-- Title -->
+<h2>Add re-pppoe to Openwrt</h2>
 
-<h2>
-  <a href="/posts/Git%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80-1.html">
-    Using Git
-  </a> 
-  <div class="post-date">
-	<span class="glyphicon glyphicon-time"></span>
-	2017-09-27
-  </div>
-</h2>
-<hr>
-<p><strong>摘要</strong></p>
-
-<p>分布式版本控制管理系统工具Git，怎能不会用？立志从嵌入式程序员入行、转到IoT世界，刚参加工作，对于Git使用很不熟悉，被公司老员工一顿嫌弃；以此记录自己所学，以备参考并勉励自己</p>
-
-<p>###分布式版本控制系统Git</p>
-
-<p>Version Control System（VCS）；关心整体数据的变化而不局限于单个文件；快照而不是简单复制；分支协同合作；本地与远程的无缝连接；开源的思想精髓、技术开源与贡献才会使得人类文明快速前进</p>
-
-<h3 id="常用命令">常用命令</h3>
-
-<p><strong>工作目录树</strong></p>
-
-<p>Git世界中，版本库不是特指服务器上版本库，而是存储在本地工作目录树的”.git”目录中；<strong>也即，想知道历史记录信息，就和本地的版本库打交道，无需和服务器上的版本库通信</strong></p>
-
-<h4 id="git配置">Git配置</h4>
-
-<p>创建一个本地仓库并配置</p>
-
-<pre><code class="language-bash">$ mkdir test.git
-$ git init   //初始化仓库，--bare参数是裸仓库（一般用于远程仓库）
-$ git config --list  //本地仓库配置信息列表
-$ git config --global --list  //本地仓库全局配置信息列表
-$ git config --global --edit  //打开配置文件进行配置
-$ git config --global user.name "your name"
-$ git config --global user.email "your email_adr"
-$ git config --global color.ui "auto"
-</code></pre>
-
-<h4 id="添加与提交">添加与提交</h4>
-
-<pre><code class="language-bash">$ git status
-$ git add &lt;file&gt;
-$ git add --all
-$ git add .
-$ git commit -m "commit illustrates" -m "xxxx"
-$ git commit -C HEAD -a --amend //追加提交信息
-
-$ git revert -n HEAD //反转提交
-$ git reset --soft
-$ git reset --hard  //慎用
-</code></pre>
-
-<h4 id="分支">分支</h4>
-
-<pre><code class="language-bash">$ git branch br-name master //从主分支master新建分支br-name
-$ git checkout -b br-name //新建分支br-name并切换至该分支
-$ git checkout br-name  //切换到br-name分支
-$ git commit -a  //全部提交
-$ git tag br1.0 br-name  //给分支br-name打上标签
-$ git tag  //查看标签信息
-$ git rebase br-name //将br-name变基到主分支
-$ git branch br-name br1.0 //在标签br1.0上建立分支br-name
-$ git archive --format=tar --prefix=test.git/ br1.0 | gzip &gt; test.tar.gz 
-      //将br1.0标签对应的版本内容打包发布
-$ git merge  //合并分支
-$ git merge --squash br-name  //将br-name分支提交压合到当前分值
-提交压合是指将所有提交记录合成一个记录，慎用
-$ git cherry-pick &lt;commit value&gt; //选择一个提交（commit值）来合并到当前分支
-$ git reset --hard &lt;commit value&gt; 
-$ git mergetool   //分支合并时如果有冲突，利用可视化工具进行操作
-$ git branch -d br-name
-$ git branch -m br-name br-name1  
-      //重命名分支，-m参数不会覆盖已存在同名br-name1的分支，
-      //如果已存在br-name1，则此命令会报错；-M参数会覆盖已存在的同名分支
-</code></pre>
-
-<h4 id="常用操作">常用操作</h4>
-
-<pre><code class="language-bash">$ git add -i  //交互式选择命令暂存到缓存区
-$ git mv name1 name2  //文件名重命名，保留原文件记录信息并删除源文件
-$ touch .gitignore  //版本库级设置忽略，或者在.git/info/exclude中添加个人级别忽略
-</code></pre>
-
-<h4 id="查询记录">查询记录</h4>
-
-<pre><code class="language-bash">$ git log  //查询commit记录信息
-$ git log -2 //查看最近2次的提交
-$ git reflog  //查看所有分支的记录
-$ git log --since="5 hours"
-$ git log --before="5 hours" -1 //查看5小时前的最后一次提交记录
-$ git log &lt;commit value&gt;   //查看指定提交记录
-$ tig &lt;commit value&gt;     //具体查看该提交记录的修改内容
-$ git diff   //比较工作目录树和暂存区之间的区别
-$ git diff --cached  //比较暂存区和版本去之间的区别
-$ git diff &lt;commit value&gt;  //查看指定记录与当前版本的区别
-$ git diff --stat &lt;commit value&gt;/&lt;tag&gt;  //炫酷的--stat参数可以统计变更数据
-$ git diff &lt;commit value1&gt; &lt;commit value2&gt;
-$ git blame &lt;file&gt;  //谁的责任
-$ git blame -L &lt;n,m&gt; &lt;file&gt;  //查看file中n到m行谁的责任
-$ git blame -L n,+m &lt;file&gt; //查看n到n+m行
-
-</code></pre>
-
-<h4 id="远程协作">远程协作</h4>
-
-<p>三种通信协议</p>
-
-<p><strong>SSH</strong></p>
-
-<p>git clone ssh://name@github.com/xxxx/xxx.git</p>
-
-<p><strong>git</strong></p>
-
-<p>git clone git://github.com/xxxx/xxx.git</p>
-
-<p><strong>http/https</strong></p>
-
-<p>git clone https://github.com/xxxx/xxx.git</p>
-
-<h4 id="高级功能">高级功能</h4>
-
-<pre><code class="language-sh">$ git gc  //整理版本库
-$ git archive //到处版本库
-$ git rebase //分支变基
-$ git bisect help //二分查找
-</code></pre>
-
-
-	<p><h3><a href="/posts/Git%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80-1.html">阅读全文 &raquo;</a></h3></p>
-<hr>
-
-<h2>
-  <a href="/posts/openwrt%E6%B7%BB%E5%8A%A0pppoe-server.html">
-    Add re-pppoe to Openwrt
-  </a> 
-  <div class="post-date">
+<div class="post-date">
 	<span class="glyphicon glyphicon-time"></span>
 	2017-09-24
-  </div>
-</h2>
-<hr>
+</div>
+<br/>
+
+<!-- content -->
+<div style="text-indent:2em;">
 <p><strong>主要思路：</strong></p>
 <ol>
   <li>了解openwrt的目录框架结构，往其中添加所需软件功能xxx模块</li>
@@ -435,193 +306,39 @@ Makefile中添加：
 </ol>
 
 
-	<p><h3><a href="/posts/openwrt%E6%B7%BB%E5%8A%A0pppoe-server.html">阅读全文 &raquo;</a></h3></p>
-<hr>
+</div>
 
-<h2>
-  <a href="/posts/%E7%AE%80%E5%8D%95%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E7%A8%8B%E5%BA%8F.html">
-    open/read/write system API
-  </a> 
-  <div class="post-date">
-	<span class="glyphicon glyphicon-time"></span>
-	2017-09-22
-  </div>
-</h2>
-<hr>
-<h1 id="系统调用openreadwrite实现文件拷贝">系统调用open/read/write实现文件拷贝</h1>
+<br/>
+<b>原创文章，转载请注明出处！</b>
+<br/>
+<b>本文链接：</b><a href="http://localhost:4000/posts/openwrt%E6%B7%BB%E5%8A%A0pppoe-server.html" title="">http://localhost:4000/posts/openwrt%E6%B7%BB%E5%8A%A0pppoe-server.html</a>
 
-<h5 id="函数原型">函数原型</h5>
-
-<p>int open(const char <em>*path</em>, int <em>flags</em>,…,/* mode_t <em>mode</em> */);</p>
-
-<p>int open(const char <em>*path</em>, int <em>flags</em>,…,/* mode_t <em>mode</em> */);
-成功则返回文件标识符；出错返回-1；</p>
-
-<p>ssize_t read(int <em>fd</em>,void <em>*buf</em>,size_t <em>nbytes</em>);</p>
-
-<p>ssize_t read(int <em>fd</em>,void <em>*buf</em>,size_t <em>nbytes</em>);
-成功返回读到的字节数，若已到文件尾，返回0；出错返回-1；</p>
-
-<p>ssize_t write(int <em>fd</em>,const void <em>*buf</em>,size_t <em>nbytes</em>);</p>
-
-<p>ssize_t write(int <em>fd</em>,const void <em>*buf</em>,size_t <em>nbytes</em>);
-成功返回已写的字节数；出错返回-1；</p>
-
-<h5 id="程序简单思路">程序简单思路</h5>
-
-<p>打开文件A—-&gt;读取文件A—–&gt;写入文件B</p>
-
-<h5 id="源代码">源代码</h5>
-
-<p><strong>filecopy.c</strong>文件</p>
-
-<p><strong>filecopy.c</strong>文件
-#include”apue.h”</p>
-
-<p><strong>filecopy.c</strong>文件</p>
-
-<pre><code>  #include"apue.h"
-  #define buffsize 1024
-  int main(int argc,char *argv[])
-   {
-       int fileA,fileB;
-       ssize_t n;
-       char buf[buffsize];
-       if(argc!=3)
-       {
-           printf("usage: filecopy fileA fileB\n"); 
-           exit(1);
-       }    
-       if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&lt;0)
-      {
-            printf("open %s failed\n",argv[1]);
-           exit(1);
-       }
-       printf("fileA is %d\n",fileA);
-       fileB=open(argv[2],O_WRONLY|O_CREAT|O_TRUNC,S_IRUSR|S_IWUSR|S_IWGRP);
-       printf("fileB is %d\n",fileB);
-       while((n=read(fileA,buf,buffsize))&gt;0)
-       {
-           printf("n is %zu\n",n);
-           if(write(fileB,buf,n)!=n)
-           {
-               printf("write error\n");
-               exit(1);
-           }
-       }
-       if(n&lt;0)
-           printf("read failed\n");
-       printf("copy compelet\n");
-       exit(0);
-   }
-</code></pre>
-
-<h5 id="遇到的问题">遇到的问题</h5>
-
-<p><strong>1. open打开文件是总是返回0</strong></p>
-
-<p><strong>1. open打开文件是总是返回0</strong>
-<code>if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&lt;0)</code></p>
-
-<p><strong>1. open打开文件是总是返回0</strong>
-<code>if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&lt;0)</code>
-上面这行代码如果写成如下，则fileA会一直返回0（<strong>缺少括号</strong>）</p>
-
-<p><strong>1. open打开文件是总是返回0</strong>
-<code>if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&lt;0)</code>
-上面这行代码如果写成如下，则fileA会一直返回0（<strong>缺少括号</strong>）
-<code>if(fileA=open(argv[1],O_RDONLY|O_NONBLOCK)&lt;0)</code></p>
-
-<p><strong>2. main函数的参数</strong></p>
-
-<p><strong>2. main函数的参数</strong>
-<code>int main(int argc, char *argv[])；</code></p>
-
-<p><strong>2. main函数的参数</strong>
-<code>int main(int argc, char *argv[])；</code>
-main函数的argv是如何传入的？又是如何不指定数组大小就可以实现的？</p>
-
-<p><strong>2. main函数的参数</strong>
-<code>int main(int argc, char *argv[])；</code>
-main函数的argv是如何传入的？又是如何不指定数组大小就可以实现的？
-c语言中不支持直接动态数组大小分配，其不同于C++中vector和string类型，此处char *argv[ ] 等同于char **argv；</p>
-
-<p><strong>3. const char *path、char const <em>path、char * const path与char *a[ ]、char (</em>a)[ ]等的区别</strong></p>
-
-<p>const char *path、char const *path：<strong>常量指针</strong>，粗略的理解为指向常量的指针（不一定是const常量，也可以是非const变量），指向常量的意思是不可以通过该指针path来改变所指向变量的值；</p>
-
-<p>char * const path: <strong>指针常量</strong>，该指针是一个常量，即该指针指向的地方不能更改，所以<strong>其定义的时候就要初始化</strong>；</p>
-
-<p>char *a[N]: 字符串指针数组，其落脚点是数组a[N]，数组中每个元素都是一个指向字符串的指针；指针里存放的是字符串的首地址，所有printf(“%s”,argv[1])就可以打印出main函数argv[1]的字符串</p>
-
-<p>char (*a)[N]: 指向包含N个char型的数组的指针，其落脚点是指针</p>
-
-
-	<p><h3><a href="/posts/%E7%AE%80%E5%8D%95%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E7%A8%8B%E5%BA%8F.html">阅读全文 &raquo;</a></h3></p>
-<hr>
-
-<h2>
-  <a href="/posts/linux%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%BD%AC%E8%A1%8C%E8%AE%B0.html">
-    Love Linux!
-  </a> 
-  <div class="post-date">
-	<span class="glyphicon glyphicon-time"></span>
-	2017-04-17
-  </div>
-</h2>
-<hr>
-<h1 id="linux工程师转行记">Linux工程师转行记</h1>
-
-<h4 id="基础知识篇">基础知识篇</h4>
-
-<ol>
-  <li><strong>C和指针</strong>；C语言的变量类型、数组、结构体、链表、指针使用、高级数据结构等等</li>
-  <li><strong>C++</strong>; C++的变量类型、数组、数据结构、指针、类、封装、继承、多态的面向对象思想等等</li>
-  <li><strong>Linux基础</strong>；系统安装、常用命令、awk、sed、shell脚本、Make命令、TCP/IP基础、服务器配置基础等等</li>
-</ol>
-
-<h4 id="系统概念篇">系统概念篇</h4>
-
-<ol>
-  <li><strong>计算机原理</strong>；硬件架构、内存管理、进程线程、网络通信等等</li>
-  <li><strong>软件编程</strong>；Makefile理解、库、链接、内存映射、软件系统架构、数据库、Bootloader等等</li>
-</ol>
-
-<h4 id="工具使用篇">工具使用篇</h4>
-
-<ol>
-  <li><strong>编程工具</strong>；Vim、Git、GCC、GDB、AutoConf/Autotool等等</li>
-  <li><strong>文档处理</strong>；Markdown、OpenOffice、Office等等</li>
-  <li><strong>网络分析</strong>；Wireshark</li>
-  <li><strong>远程工具</strong>；Putty、SecureCRT</li>
-</ol>
-
-<h4 id="知识拓展篇">知识拓展篇</h4>
-
-<ol>
-  <li><strong>无线网络</strong>；OpenWRT</li>
-  <li><strong>硬件设备</strong>；树莓派、mini2440、Zigbee等等</li>
-  <li><strong>网络编程</strong>；Python爬虫、Java基础、数据库基础</li>
-</ol>
-
-<h4 id="笔面试经验">笔面试经验</h4>
-
-<ol>
-  <li><strong>C、C++</strong>；静态变量、静态函数概念、指针变量的运算、数组的使用、类的概念、链表的使用（插入、删除、排序）</li>
-  <li><strong>编程知识</strong>；进程和线程概念、数据的排序/查找、链表的创建使用</li>
-  <li><strong>项目经历</strong>；Git使用情况、程序如何调试、程序反编译/跟踪、Uboot移植、Linux内核移植、Linux根文件系统创建、树莓派移植OpenWRT、编译遇到的问题以及如何解决、硬件问题以及如何调试解决、大型代码维护管理等等</li>
-</ol>
-
-
-	<p><h3><a href="/posts/linux%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%BD%AC%E8%A1%8C%E8%AE%B0.html">阅读全文 &raquo;</a></h3></p>
-<hr>
-
-
-<!-- Pager indicator -->
-<ul class="pager">
+<!-- next and previous -->
+<div style="margin-top:15px; margin-bottom:10px">
+  
+  <span class="next">
+    上篇：
+    <a href="/posts/%E7%AE%80%E5%8D%95%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E7%A8%8B%E5%BA%8F.html">
+      open/read/write system API
+    </a>
+  </span>
    
-</ul>
-
+  
+  <div style="float:right">
+  <span class="prev" >
+    下篇：
+    <a href="/posts/Git%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80-1.html">
+      Using Git
+    </a>
+  </span>
+  </div>
+  
+</div>
+<hr>
+<!-- Blog Comments -->
+<div class="media">
+   
+</div>
         </div>
         <!-- Blog Sidebar Widgets Column -->
         <div class="col-md-4">
@@ -711,30 +428,6 @@ c语言中不支持直接动态数组大小分配，其不同于C++中vector和s
                 </ul>
               </div> 
 			</div>
-          </div>		  
-		  <!-- Blog Links Well -->
-          <div class="well">
-            <h4>
-              友情链接
-            </h4>
-                        <ul class="list-unstyled">
-              <li>
-                <a href="http://www.baidu.com">
-                  www.baidu.com
-                </a>
-              </li>
-              <li>
-                <a href="http://www.google.com/" target="_blank">
-                  www.google.com
-                </a>
-              </li>	
-              <li>
-                <a href="/links.html">
-                  others
-                </a>
-              </li>				  
-            </ul>
- 
           </div>
         </div>
       </div>
@@ -758,4 +451,5 @@ c语言中不支持直接动态数组大小分配，其不同于C++中vector和s
     </div>
     <!-- /.container -->
   </body>
+
 </html>

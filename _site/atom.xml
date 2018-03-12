@@ -4,7 +4,7 @@
  <title></title>
  <link href="http://jrglinux.github.io/atom.xml" rel="self"/>
  <link href="http://jrglinux.github.io"/>
- <updated>2018-03-12T15:30:11+00:00</updated>
+ <updated>2018-03-12T16:14:35+00:00</updated>
  <author>
    <name>jrglinux</name>
    <email>jrglinuxcn@gmail.com</email>
@@ -12,37 +12,494 @@
 
  
  <entry>
-   <title>人生什么更重要？[测试]</title>
-   <link href="http://jrglinux.github.io/posts/which-more-important.html"/>
-   <updated>2010-01-01T00:00:00+00:00</updated>
-   <id>/posts/which-more-important</id>
-   <content type="html">&lt;h3 id=&quot;哪个更重要&quot;&gt;哪个更重要？&lt;/h3&gt;
+   <title>Using Git</title>
+   <link href="http://jrglinux.github.io/posts/Git%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80-1.html"/>
+   <updated>2017-09-27T00:00:00+00:00</updated>
+   <id>/posts/Git使用基础-1</id>
+   <content type="html">&lt;p&gt;&lt;strong&gt;摘要&lt;/strong&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;方向比努力重要，&lt;br /&gt;
-身体比金钱重要，&lt;br /&gt;
-生活比文凭重要，&lt;br /&gt;
-情商比智商重要，&lt;br /&gt;
-能力比知识重要，&lt;br /&gt;
-行动比（愿望）空想重要。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;分布式版本控制管理系统工具Git，怎能不会用？立志从嵌入式程序员入行、转到IoT世界，刚参加工作，对于Git使用很不熟悉，被公司老员工一顿嫌弃；以此记录自己所学，以备参考并勉励自己&lt;/p&gt;
 
-&lt;h3 id=&quot;一生最重要的7项资产&quot;&gt;一生最重要的7项资产&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;1，健康：人类的第一资产，  
-2，财富：资产的最重要诠释，  
-3，智慧：改变命运的资本，  
-4，婚姻与家庭：身心的避风港，  
-5，心灵：深查世界的棱镜，  
-6，友谊：一生快乐源泉，  
-7，人生的意义：成长的源动力。  
+&lt;p&gt;###分布式版本控制系统Git&lt;/p&gt;
+
+&lt;p&gt;Version Control System（VCS）；关心整体数据的变化而不局限于单个文件；快照而不是简单复制；分支协同合作；本地与远程的无缝连接；开源的思想精髓、技术开源与贡献才会使得人类文明快速前进&lt;/p&gt;
+
+&lt;h3 id=&quot;常用命令&quot;&gt;常用命令&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;工作目录树&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Git世界中，版本库不是特指服务器上版本库，而是存储在本地工作目录树的”.git”目录中；&lt;strong&gt;也即，想知道历史记录信息，就和本地的版本库打交道，无需和服务器上的版本库通信&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;git配置&quot;&gt;Git配置&lt;/h4&gt;
+
+&lt;p&gt;创建一个本地仓库并配置&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ mkdir test.git
+$ git init   //初始化仓库，--bare参数是裸仓库（一般用于远程仓库）
+$ git config --list  //本地仓库配置信息列表
+$ git config --global --list  //本地仓库全局配置信息列表
+$ git config --global --edit  //打开配置文件进行配置
+$ git config --global user.name &quot;your name&quot;
+$ git config --global user.email &quot;your email_adr&quot;
+$ git config --global color.ui &quot;auto&quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;人生四句话&quot;&gt;人生四句话&lt;/h3&gt;
+&lt;h4 id=&quot;添加与提交&quot;&gt;添加与提交&lt;/h4&gt;
 
-&lt;p&gt;把自己当成别人（痛苦），&lt;br /&gt;
-把别人当成自己（同情），&lt;br /&gt;
-把别人当成别人（尊重），&lt;br /&gt;
-把自己当成自己（走自己的路）。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ git status
+$ git add &amp;lt;file&amp;gt;
+$ git add --all
+$ git add .
+$ git commit -m &quot;commit illustrates&quot; -m &quot;xxxx&quot;
+$ git commit -C HEAD -a --amend //追加提交信息
+
+$ git revert -n HEAD //反转提交
+$ git reset --soft
+$ git reset --hard  //慎用
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;分支&quot;&gt;分支&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ git branch br-name master //从主分支master新建分支br-name
+$ git checkout -b br-name //新建分支br-name并切换至该分支
+$ git checkout br-name  //切换到br-name分支
+$ git commit -a  //全部提交
+$ git tag br1.0 br-name  //给分支br-name打上标签
+$ git tag  //查看标签信息
+$ git rebase br-name //将br-name变基到主分支
+$ git branch br-name br1.0 //在标签br1.0上建立分支br-name
+$ git archive --format=tar --prefix=test.git/ br1.0 | gzip &amp;gt; test.tar.gz 
+      //将br1.0标签对应的版本内容打包发布
+$ git merge  //合并分支
+$ git merge --squash br-name  //将br-name分支提交压合到当前分值
+提交压合是指将所有提交记录合成一个记录，慎用
+$ git cherry-pick &amp;lt;commit value&amp;gt; //选择一个提交（commit值）来合并到当前分支
+$ git reset --hard &amp;lt;commit value&amp;gt; 
+$ git mergetool   //分支合并时如果有冲突，利用可视化工具进行操作
+$ git branch -d br-name
+$ git branch -m br-name br-name1  
+      //重命名分支，-m参数不会覆盖已存在同名br-name1的分支，
+      //如果已存在br-name1，则此命令会报错；-M参数会覆盖已存在的同名分支
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;常用操作&quot;&gt;常用操作&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ git add -i  //交互式选择命令暂存到缓存区
+$ git mv name1 name2  //文件名重命名，保留原文件记录信息并删除源文件
+$ touch .gitignore  //版本库级设置忽略，或者在.git/info/exclude中添加个人级别忽略
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;查询记录&quot;&gt;查询记录&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ git log  //查询commit记录信息
+$ git log -2 //查看最近2次的提交
+$ git reflog  //查看所有分支的记录
+$ git log --since=&quot;5 hours&quot;
+$ git log --before=&quot;5 hours&quot; -1 //查看5小时前的最后一次提交记录
+$ git log &amp;lt;commit value&amp;gt;   //查看指定提交记录
+$ tig &amp;lt;commit value&amp;gt;     //具体查看该提交记录的修改内容
+$ git diff   //比较工作目录树和暂存区之间的区别
+$ git diff --cached  //比较暂存区和版本去之间的区别
+$ git diff &amp;lt;commit value&amp;gt;  //查看指定记录与当前版本的区别
+$ git diff --stat &amp;lt;commit value&amp;gt;/&amp;lt;tag&amp;gt;  //炫酷的--stat参数可以统计变更数据
+$ git diff &amp;lt;commit value1&amp;gt; &amp;lt;commit value2&amp;gt;
+$ git blame &amp;lt;file&amp;gt;  //谁的责任
+$ git blame -L &amp;lt;n,m&amp;gt; &amp;lt;file&amp;gt;  //查看file中n到m行谁的责任
+$ git blame -L n,+m &amp;lt;file&amp;gt; //查看n到n+m行
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;远程协作&quot;&gt;远程协作&lt;/h4&gt;
+
+&lt;p&gt;三种通信协议&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;SSH&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;git clone ssh://name@github.com/xxxx/xxx.git&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;git&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;git clone git://github.com/xxxx/xxx.git&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;http/https&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;git clone https://github.com/xxxx/xxx.git&lt;/p&gt;
+
+&lt;h4 id=&quot;高级功能&quot;&gt;高级功能&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;$ git gc  //整理版本库
+$ git archive //到处版本库
+$ git rebase //分支变基
+$ git bisect help //二分查找
+&lt;/code&gt;&lt;/pre&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Add re-pppoe to Openwrt</title>
+   <link href="http://jrglinux.github.io/posts/openwrt%E6%B7%BB%E5%8A%A0pppoe-server.html"/>
+   <updated>2017-09-24T00:00:00+00:00</updated>
+   <id>/posts/openwrt添加pppoe-server</id>
+   <content type="html">&lt;p&gt;&lt;strong&gt;主要思路：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;了解openwrt的目录框架结构，往其中添加所需软件功能xxx模块&lt;/li&gt;
+  &lt;li&gt;编写package/xxx/目录下的Makefile&lt;/li&gt;
+  &lt;li&gt;生成package/xxx/src/目录下Makefile（与GNU Make语法相同）&lt;/li&gt;
+  &lt;li&gt;编译生成img文件，烧写到路由器，配置pppoe-server-options&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;openwrt目录框架&lt;/strong&gt;
+&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/5737261-7a86df56b858742c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;openwrt目录&quot; /&gt;
+&lt;strong&gt;图中第一行为原始目录，第二行为编译后多生成的目录&lt;/strong&gt;
+&lt;strong&gt;tools&lt;/strong&gt;：存放一些Makefile。编译固件时需要工具，这些Makefile则定义如何获得这些工具的源码包以及如何编译/安装这些命令工具
+&lt;strong&gt;toolchain&lt;/strong&gt;：包含一些Makefile，这些Makefile定义了如何获得kernel headers、C library、bin-utils、compiler、debugger以及如何编译它们。这些源码用来制作交叉编译工具，如果需要定义一个新的系统架构，需要在这里添加一些配置
+&lt;strong&gt;include&lt;/strong&gt;：包含一些公用的Makefile，会被其他Makefile所包含
+&lt;strong&gt;scripts&lt;/strong&gt;：存放一些用于openwrt软件包管理的perl脚本
+&lt;strong&gt;target&lt;/strong&gt;：各个硬件平台在这里定义了编译固件、内核的步骤和方法
+&lt;strong&gt;package&lt;/strong&gt;：包含针对各个软件包的Makefile以及补丁，这些Makefile定义了如何获得和编译安装它们&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;bin&lt;/strong&gt;：存放编译完成后生成的firmware及ipk软件包
+&lt;strong&gt;build_dir&lt;/strong&gt;：所有软件包都解压到该目录，并在该目录下编译
+&lt;strong&gt;staging_dir&lt;/strong&gt;：最终安装的目录，tool、cross-compilation-toolchain、rootfs都在这里
+&lt;strong&gt;dl&lt;/strong&gt;：存放从网上下的用户空间软件包的源代码
+&lt;strong&gt;feeds&lt;/strong&gt;：openwrt环境所需要的软件包套件&lt;/p&gt;
+
+&lt;p&gt;以r7800-beta2-buildroot.git中的led-control模块为例学习
+r7800-beta2-buildroot.git/package/led-control/Makefile:
+&lt;code&gt;include $(TOPDIR)/rules.mk&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;PKG_NAME :=led-control&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;PKG_NAME :=led-control&lt;/code&gt;
+&lt;code&gt;PKG_RELEASE :=1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;PKG_NAME :=led-control&lt;/code&gt;
+&lt;code&gt;PKG_RELEASE :=1&lt;/code&gt;
+&lt;code&gt;PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;include $(INCLUDE_DIR)/package.mk&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Package/led-control&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Package/led-control&lt;/code&gt;
+&lt;code&gt;SECTION :=utils&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Package/led-control&lt;/code&gt;
+&lt;code&gt;SECTION :=utils&lt;/code&gt;
+&lt;code&gt;CATEGORY :=Base system&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Package/led-control&lt;/code&gt;
+&lt;code&gt;SECTION :=utils&lt;/code&gt;
+&lt;code&gt;CATEGORY :=Base system&lt;/code&gt;
+&lt;code&gt;DEFAULT :=y&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Package/led-control&lt;/code&gt;
+&lt;code&gt;SECTION :=utils&lt;/code&gt;
+&lt;code&gt;CATEGORY :=Base system&lt;/code&gt;
+&lt;code&gt;DEFAULT :=y&lt;/code&gt;
+&lt;code&gt;TITLE :=Update utility for LED control&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Package/led-control&lt;/code&gt;
+&lt;code&gt;SECTION :=utils&lt;/code&gt;
+&lt;code&gt;CATEGORY :=Base system&lt;/code&gt;
+&lt;code&gt;DEFAULT :=y&lt;/code&gt;
+&lt;code&gt;TITLE :=Update utility for LED control&lt;/code&gt;
+&lt;code&gt;endef&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Build/Prepare mkdir -p $(PKG_BUILD_DIR) $(CP) ./src/* $(PKG_BUILD_DIR)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Build/Prepare mkdir -p $(PKG_BUILD_DIR) $(CP) ./src/* $(PKG_BUILD_DIR)&lt;/code&gt;
+&lt;code&gt;endef&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;define Package/led-control/install install -d -m0755 $(1)/sbin install -m0755 $(PKG_BUILD_DIR)/ledcontrol $(1)/sbin/ endef&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$(eval $(call BuildPackage,led-control))&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这个Makefile主要分为几个部分：
+&lt;strong&gt;1. 首先需要包含几个文件，它们定义了一些变量、规则、函数&lt;/strong&gt;
+&lt;code&gt;include $(TOPDIR)/rules.mk&lt;/code&gt;
+&lt;code&gt;include $(INCLUDE_DIR)/package.mk&lt;/code&gt;
+&lt;code&gt;include $(INCLUDE_DIR)/kernel.mk&lt;/code&gt;定义内核模块时才需要
+&lt;code&gt;include $(INCLUDE_DIR)/cmake.mk&lt;/code&gt;使用cmake构建软件时用&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2.  一个典型的openwrt软件包目录下没有源码目录，构建openwrt的第一步是从指定的URL下载指定的源码软件包，定义如下&lt;/strong&gt;
+&lt;code&gt;PKG_SOURCE := XXXX.tar.gz&lt;/code&gt;
+&lt;code&gt;PKG_SOURCE_URL :=http://www.example.com/&lt;/code&gt;
+&lt;code&gt;PKG_MD5SUM :=e06......askdfjkx&lt;/code&gt;
+这三行的意思是从http://www.example.com/XXXX.tar.gz下载源码包，一般存放在dl文件夹里，然后解压到&lt;xxx&gt;/build_dir/target-xxx/$(PKG_BUILD_DIR)&lt;/xxx&gt;&lt;/p&gt;
+
+&lt;p&gt;PKG_*定义了和软件包相关的一些信息：
+PKG_NAME   ——软件包名称
+PKG_VERSION  ——下载或自编的软件包的版本（&lt;strong&gt;必须有&lt;/strong&gt;）
+PKG_RELEASE ——当前编译版本
+PKG_BUILD_DIR ——在哪个目录下编译该软件包，默认为$(BUILD_DIR)/$(PKG_NAME)-$(PKG-VERSION)
+PKG_SOURCE ——要从网上下载源码包的文件名
+PKG_SOURCE_URL ——下载路径
+PKG_MD5SUM ——验证下载源码包的完整性
+PKG_CAT ——怎样解压源码包
+PKG_BUILD_DEPENDS ——定义需要在该软件包之前编译的软件包或者一些版本的依赖&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. package/xxx&lt;/strong&gt;描述软件包在menuconfig和ipkg中的条目（其中xxx即出现在menuconfig中的标签以及.config中的CONFIG_PACKAGE_xxx=y）
+&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/5737261-168e085134ae528e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;package/xxx&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. kernelpackage/xxx&lt;/strong&gt;
+&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/5737261-5a4bd10f63757a07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;kernelpackage/xxx&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. Build/Prepare 定义一组指令，比如用于给源码打补丁，创建编译目录，拷贝自己的源码到编译目录等&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;6. Package/xxx/install 定义如何安装软件包，定义一组命令，用来在嵌入式文件系统中创建目录或者拷贝相关文件到嵌入式文件系统或ipk&lt;/strong&gt;
+&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/5737261-e545a4d49a5401c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;package/xxx/install&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;7. Package/xxx/preinst定义预先执行的脚本&lt;/strong&gt;
+&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/5737261-3ecf795f751f639d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Package/xxx/preinst&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;8. call eval函数调用&lt;/strong&gt;
+&lt;code&gt;$(eval $(call BuildPackage,xxx))&lt;/code&gt;
+或者
+&lt;code&gt;$(eval $(call KernelPackage,xxx))&lt;/code&gt;
+前者用于应用程序，后者用于内核模块
+这个(call BuildPackage,xxx)里面大有文章，值得深究&lt;/p&gt;
+
+&lt;p&gt;###遇到的问题
+从网上下载rp-pppoe源码包，网址：
+rp-pppoe源码
+https://github.com/cmtsij/OpenWrt_AttitudeAdjustment_Packages/tree/master/net/rp-pppoe
+rp-pppoe-3.10源码包
+http://download.csdn.net/detail/gududesiling/3468420&lt;/p&gt;
+
+&lt;p&gt;在编译rp-pppoe的时候，系统提醒需要ppp（主要是需要pppd）的支持，因此下载ppp源码包进行编译安装
+ppp源码：https://github.com/openwrt/openwrt/tree/master/package/network/services/ppp
+ppp-2.4.7源码包
+http://linux.softpedia.com/get/Communications/Telephony/ppp-14015.shtml&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;编译ppp时遇到的问题&lt;/strong&gt;
+问题：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;code&gt;cannot stat  xxx/build_dir/linux-ipq806x/linux-3.4.103/include/linux/compiler.h (还有atm*.h)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Strip：Unable to recognise the format of the imput file xxx/sbin/chat&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;解决方法：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;网上下载linux-3.4.113.tar.xz的源码包，将其&lt;code&gt;include/linux/compiler.h&lt;/code&gt;以及&lt;code&gt;include/linux/atm*.h&lt;/code&gt;拷贝到openwrt包的&lt;code&gt;xxx/build_dir/linux-ipq806x/linux-3.4.103/include/linux/&lt;/code&gt;下即可&lt;/li&gt;
+  &lt;li&gt;网上找了两种解决方案
+（1）修改PATH环境变量，使得gcc和strip命令路径一致
+（2）修改config.mk文件中&lt;code&gt;INSTALLSTRIP=-s&lt;/code&gt;,删除“-s”参数
+这里，两种方法都无效。不过参照方法（2），修改package/ppp/路径下的各层Makefile.linux中的install命令，将&lt;code&gt;install -s -c ...&lt;/code&gt;中的&lt;code&gt;-s&lt;/code&gt;参数去除即可，也即安装过程中不用strip命令&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;编译rp-pppoe时遇到的问题&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如何编写package/rp-pppoe/路径下的Makefile，使得其在src文件夹下利用configure文件自动生成Makefile。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;解决方法：
+Makefile中添加：
+       define Build/configure
+       $(call Build/Configure/Default)
+       endef
+其过程中，可能会遇到问题
+&lt;code&gt;$error: no defaults for cross-compiling &lt;/code&gt;
+这是由于rp-pppoe/src/下的configure文件中有这么一句话
+&lt;code&gt;if test &quot;$cross_compiling&quot;=yes,then:
+    $ECHO &quot;no defaults for cross-compiling&quot;; exit 0;&lt;/code&gt;
+将其中的&lt;code&gt;exit 0&lt;/code&gt;删除即可&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装rp-pppoe套件时，报错
+     cannot overwrite non-directory … /etc/ppp
+这是因为原油的openwrt中/etc/ppp是一个快捷方式，因此在安装rp-pppoe时，其Makefile定义软件和配置文件安装路径为/etc/ppp，不可写入。因此重新建立一个文件夹/etc/pppa，将pppoe-server的配置文件安装到此目录，然后到开发板上再移动到ppp文件夹里面去&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将生成的固件刷入路由器Netgear/R7800，但是拨号时候没有什么效果
+通过抓包分析知道，是路由器向PC端发送了一个PADT终止包。
+修改package/rp-pppoe/src/pppoe-server.c
+其中，它在处理childHandler的函数中，有一段话
+     if(!(session-&amp;gt;flags &amp;amp; FLAG_SENT_PADT))
+     {if(sesssion-&amp;gt;flages&amp;amp;FLAG_RECVD-PADT
+     sendPATD();
+     }
+     else{
+     sendPADT();
+     }
+     xxxxxxx
+     }
+将其中的else语段注释掉就行&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;最后拨号时，还是连不上，是pppoe-server运行还需要pppoe软件的支持，在package/rp-pppoe/Makefile中添加pppoe软件包的安装即拨号成功&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>open/read/write system API</title>
+   <link href="http://jrglinux.github.io/posts/%E7%AE%80%E5%8D%95%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E7%A8%8B%E5%BA%8F.html"/>
+   <updated>2017-09-22T00:00:00+00:00</updated>
+   <id>/posts/简单文件拷贝程序</id>
+   <content type="html">&lt;h1 id=&quot;系统调用openreadwrite实现文件拷贝&quot;&gt;系统调用open/read/write实现文件拷贝&lt;/h1&gt;
+
+&lt;h5 id=&quot;函数原型&quot;&gt;函数原型&lt;/h5&gt;
+
+&lt;p&gt;int open(const char &lt;em&gt;*path&lt;/em&gt;, int &lt;em&gt;flags&lt;/em&gt;,…,/* mode_t &lt;em&gt;mode&lt;/em&gt; */);&lt;/p&gt;
+
+&lt;p&gt;int open(const char &lt;em&gt;*path&lt;/em&gt;, int &lt;em&gt;flags&lt;/em&gt;,…,/* mode_t &lt;em&gt;mode&lt;/em&gt; */);
+成功则返回文件标识符；出错返回-1；&lt;/p&gt;
+
+&lt;p&gt;ssize_t read(int &lt;em&gt;fd&lt;/em&gt;,void &lt;em&gt;*buf&lt;/em&gt;,size_t &lt;em&gt;nbytes&lt;/em&gt;);&lt;/p&gt;
+
+&lt;p&gt;ssize_t read(int &lt;em&gt;fd&lt;/em&gt;,void &lt;em&gt;*buf&lt;/em&gt;,size_t &lt;em&gt;nbytes&lt;/em&gt;);
+成功返回读到的字节数，若已到文件尾，返回0；出错返回-1；&lt;/p&gt;
+
+&lt;p&gt;ssize_t write(int &lt;em&gt;fd&lt;/em&gt;,const void &lt;em&gt;*buf&lt;/em&gt;,size_t &lt;em&gt;nbytes&lt;/em&gt;);&lt;/p&gt;
+
+&lt;p&gt;ssize_t write(int &lt;em&gt;fd&lt;/em&gt;,const void &lt;em&gt;*buf&lt;/em&gt;,size_t &lt;em&gt;nbytes&lt;/em&gt;);
+成功返回已写的字节数；出错返回-1；&lt;/p&gt;
+
+&lt;h5 id=&quot;程序简单思路&quot;&gt;程序简单思路&lt;/h5&gt;
+
+&lt;p&gt;打开文件A—-&amp;gt;读取文件A—–&amp;gt;写入文件B&lt;/p&gt;
+
+&lt;h5 id=&quot;源代码&quot;&gt;源代码&lt;/h5&gt;
+
+&lt;p&gt;&lt;strong&gt;filecopy.c&lt;/strong&gt;文件&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;filecopy.c&lt;/strong&gt;文件
+#include”apue.h”&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;filecopy.c&lt;/strong&gt;文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  #include&quot;apue.h&quot;
+  #define buffsize 1024
+  int main(int argc,char *argv[])
+   {
+       int fileA,fileB;
+       ssize_t n;
+       char buf[buffsize];
+       if(argc!=3)
+       {
+           printf(&quot;usage: filecopy fileA fileB\n&quot;); 
+           exit(1);
+       }    
+       if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&amp;lt;0)
+      {
+            printf(&quot;open %s failed\n&quot;,argv[1]);
+           exit(1);
+       }
+       printf(&quot;fileA is %d\n&quot;,fileA);
+       fileB=open(argv[2],O_WRONLY|O_CREAT|O_TRUNC,S_IRUSR|S_IWUSR|S_IWGRP);
+       printf(&quot;fileB is %d\n&quot;,fileB);
+       while((n=read(fileA,buf,buffsize))&amp;gt;0)
+       {
+           printf(&quot;n is %zu\n&quot;,n);
+           if(write(fileB,buf,n)!=n)
+           {
+               printf(&quot;write error\n&quot;);
+               exit(1);
+           }
+       }
+       if(n&amp;lt;0)
+           printf(&quot;read failed\n&quot;);
+       printf(&quot;copy compelet\n&quot;);
+       exit(0);
+   }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;遇到的问题&quot;&gt;遇到的问题&lt;/h5&gt;
+
+&lt;p&gt;&lt;strong&gt;1. open打开文件是总是返回0&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. open打开文件是总是返回0&lt;/strong&gt;
+&lt;code&gt;if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&amp;lt;0)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. open打开文件是总是返回0&lt;/strong&gt;
+&lt;code&gt;if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&amp;lt;0)&lt;/code&gt;
+上面这行代码如果写成如下，则fileA会一直返回0（&lt;strong&gt;缺少括号&lt;/strong&gt;）&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. open打开文件是总是返回0&lt;/strong&gt;
+&lt;code&gt;if((fileA=open(argv[1],O_RDONLY|O_NONBLOCK))&amp;lt;0)&lt;/code&gt;
+上面这行代码如果写成如下，则fileA会一直返回0（&lt;strong&gt;缺少括号&lt;/strong&gt;）
+&lt;code&gt;if(fileA=open(argv[1],O_RDONLY|O_NONBLOCK)&amp;lt;0)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. main函数的参数&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. main函数的参数&lt;/strong&gt;
+&lt;code&gt;int main(int argc, char *argv[])；&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. main函数的参数&lt;/strong&gt;
+&lt;code&gt;int main(int argc, char *argv[])；&lt;/code&gt;
+main函数的argv是如何传入的？又是如何不指定数组大小就可以实现的？&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. main函数的参数&lt;/strong&gt;
+&lt;code&gt;int main(int argc, char *argv[])；&lt;/code&gt;
+main函数的argv是如何传入的？又是如何不指定数组大小就可以实现的？
+c语言中不支持直接动态数组大小分配，其不同于C++中vector和string类型，此处char *argv[ ] 等同于char **argv；&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. const char *path、char const &lt;em&gt;path、char * const path与char *a[ ]、char (&lt;/em&gt;a)[ ]等的区别&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;const char *path、char const *path：&lt;strong&gt;常量指针&lt;/strong&gt;，粗略的理解为指向常量的指针（不一定是const常量，也可以是非const变量），指向常量的意思是不可以通过该指针path来改变所指向变量的值；&lt;/p&gt;
+
+&lt;p&gt;char * const path: &lt;strong&gt;指针常量&lt;/strong&gt;，该指针是一个常量，即该指针指向的地方不能更改，所以&lt;strong&gt;其定义的时候就要初始化&lt;/strong&gt;；&lt;/p&gt;
+
+&lt;p&gt;char *a[N]: 字符串指针数组，其落脚点是数组a[N]，数组中每个元素都是一个指向字符串的指针；指针里存放的是字符串的首地址，所有printf(“%s”,argv[1])就可以打印出main函数argv[1]的字符串&lt;/p&gt;
+
+&lt;p&gt;char (*a)[N]: 指向包含N个char型的数组的指针，其落脚点是指针&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Love Linux!</title>
+   <link href="http://jrglinux.github.io/posts/linux%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%BD%AC%E8%A1%8C%E8%AE%B0.html"/>
+   <updated>2017-04-17T00:00:00+00:00</updated>
+   <id>/posts/linux工程师转行记</id>
+   <content type="html">&lt;h1 id=&quot;linux工程师转行记&quot;&gt;Linux工程师转行记&lt;/h1&gt;
+
+&lt;h4 id=&quot;基础知识篇&quot;&gt;基础知识篇&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;C和指针&lt;/strong&gt;；C语言的变量类型、数组、结构体、链表、指针使用、高级数据结构等等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;C++&lt;/strong&gt;; C++的变量类型、数组、数据结构、指针、类、封装、继承、多态的面向对象思想等等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Linux基础&lt;/strong&gt;；系统安装、常用命令、awk、sed、shell脚本、Make命令、TCP/IP基础、服务器配置基础等等&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;系统概念篇&quot;&gt;系统概念篇&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;计算机原理&lt;/strong&gt;；硬件架构、内存管理、进程线程、网络通信等等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;软件编程&lt;/strong&gt;；Makefile理解、库、链接、内存映射、软件系统架构、数据库、Bootloader等等&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;工具使用篇&quot;&gt;工具使用篇&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;编程工具&lt;/strong&gt;；Vim、Git、GCC、GDB、AutoConf/Autotool等等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;文档处理&lt;/strong&gt;；Markdown、OpenOffice、Office等等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;网络分析&lt;/strong&gt;；Wireshark&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;远程工具&lt;/strong&gt;；Putty、SecureCRT&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;知识拓展篇&quot;&gt;知识拓展篇&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;无线网络&lt;/strong&gt;；OpenWRT&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;硬件设备&lt;/strong&gt;；树莓派、mini2440、Zigbee等等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;网络编程&lt;/strong&gt;；Python爬虫、Java基础、数据库基础&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;笔面试经验&quot;&gt;笔面试经验&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;C、C++&lt;/strong&gt;；静态变量、静态函数概念、指针变量的运算、数组的使用、类的概念、链表的使用（插入、删除、排序）&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;编程知识&lt;/strong&gt;；进程和线程概念、数据的排序/查找、链表的创建使用&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;项目经历&lt;/strong&gt;；Git使用情况、程序如何调试、程序反编译/跟踪、Uboot移植、Linux内核移植、Linux根文件系统创建、树莓派移植OpenWRT、编译遇到的问题以及如何解决、硬件问题以及如何调试解决、大型代码维护管理等等&lt;/li&gt;
+&lt;/ol&gt;
+
 </content>
  </entry>
  
