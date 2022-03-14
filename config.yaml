@@ -1,7 +1,7 @@
-baseURL: https://jrglinux.github.io
+baseURL: https://jrglinux.gitee.io/zx
 
 languageCode: en-us
-title: "jrglinux"
+title: "zx"
 theme: "toha"
 
 # Manage languages
